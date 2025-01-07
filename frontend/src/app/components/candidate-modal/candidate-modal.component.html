@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>New Candidate</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="candidateForm">
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-field">
+          <ion-label>First Name</ion-label>
+          <ion-input formControlName="firstName" type="text" placeholder="Enter first name"></ion-input>
+        </div>
+
+        <div class="form-field">
+          <ion-label>Last Name</ion-label>
+          <ion-input formControlName="lastName" type="text" placeholder="Enter last name"></ion-input>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <ion-label>Position</ion-label>
+          <ion-input formControlName="position" type="text" placeholder="Enter position"></ion-input>
+        </div>
+
+        <div class="form-field">
+          <ion-label>Military Status</ion-label>
+          <ion-select formControlName="militaryStatus" interface="action-sheet" placeholder="Select status">
+            <ion-select-option value="COMPLETED">Completed</ion-select-option>
+            <ion-select-option value="EXEMPT">Exempt</ion-select-option>
+            <ion-select-option value="POSTPONED">Postponed</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <div class="notice-period-toggle">
+            <ion-checkbox formControlName="hasNoticePeriod"></ion-checkbox>
+            <ion-label>Has Notice Period</ion-label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row" *ngIf="candidateForm.get('hasNoticePeriod')?.value">
+        <div class="form-field notice-period">
+          <ion-label>Notice Period</ion-label>
+          <div class="notice-inputs" formGroupName="noticePeriod">
+            <ion-select formControlName="months" interface="action-sheet" placeholder="Months">
+              <ion-select-option [value]="i" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10,11,12]">
+                {{i}} {{i === 1 ? 'month' : 'months'}}
+              </ion-select-option>
+            </ion-select>
+
+            <ion-select formControlName="days" interface="action-sheet" placeholder="Days">
+              <ion-select-option [value]="i" *ngFor="let i of getDaysArray()">
+                {{i}} {{i === 1 ? 'day' : 'days'}}
+              </ion-select-option>
+            </ion-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <ion-label>Phone</ion-label>
+          <ion-input formControlName="phone" type="tel" placeholder="Enter phone number"></ion-input>
+        </div>
+
+        <div class="form-field">
+          <ion-label>Email</ion-label>
+          <ion-input formControlName="email" type="email" placeholder="Enter email address"></ion-input>
+        </div>
+      </div>
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()" color="medium">Cancel</ion-button>
+      <ion-button (click)="save()" [disabled]="!candidateForm.valid" color="primary">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer> 

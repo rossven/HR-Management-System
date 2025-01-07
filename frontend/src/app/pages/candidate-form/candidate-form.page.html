@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/candidate-list"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isEdit ? 'Edit Candidate' : 'New Candidate' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="container">
+    <ion-card>
+      <ion-card-content>
+        <form [formGroup]="candidateForm" (ngSubmit)="onSubmit()">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-md="6">
+                <ion-item>
+                  <ion-label position="floating">First Name</ion-label>
+                  <ion-input formControlName="firstName" type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" size-md="6">
+                <ion-item>
+                  <ion-label position="floating">Last Name</ion-label>
+                  <ion-input formControlName="lastName" type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" size-md="6">
+                <ion-item>
+                  <ion-label position="floating">Position</ion-label>
+                  <ion-input formControlName="position" type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" size-md="6">
+                <ion-item>
+                  <ion-label>Military Status</ion-label>
+                  <ion-select formControlName="militaryStatus">
+                    <ion-select-option value="COMPLETED">Completed</ion-select-option>
+                    <ion-select-option value="EXEMPT">Exempt</ion-select-option>
+                    <ion-select-option value="POSTPONED">Postponed</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" size-md="6">
+                <ion-item>
+                  <ion-label position="floating">Notice Period</ion-label>
+                  <ion-input formControlName="noticePeriod" type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" size-md="6">
+                <ion-item>
+                  <ion-label position="floating">Phone</ion-label>
+                  <ion-input formControlName="phone" type="tel"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="floating">Email</ion-label>
+                  <ion-input formControlName="email" type="email"></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <div class="ion-text-center ion-padding-top">
+            <ion-button type="submit" [disabled]="!candidateForm.valid">
+              {{ isEdit ? 'Update' : 'Save' }}
+            </ion-button>
+          </div>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content> 

@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>HR Management System</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="table-container">
+    <div class="table-header">
+      <h2>Candidate List</h2>
+      <div class="table-actions">
+        <ion-button (click)="toggleFilters()" color="orange">
+          <ion-icon name="filter" slot="start"></ion-icon>
+          FILTERS
+        </ion-button>
+        <ion-button (click)="openNewCandidateModal()" color="orange">
+          <ion-icon name="add" slot="start"></ion-icon>
+          NEW CANDIDATE
+        </ion-button>
+      </div>
+    </div>
+
+    <table class="candidate-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Email</th>
+          <th>Military Status</th>
+          <th>Notice Period</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredCandidates.length === 0">
+          <td colspan="6" class="no-data">No candidates found</td>
+        </tr>
+        <tr *ngFor="let candidate of filteredCandidates">
+          <td data-label="Name">{{candidate.firstName}} {{candidate.lastName}}</td>
+          <td data-label="Position">{{candidate.position}}</td>
+          <td data-label="Email">{{candidate.email}}</td>
+          <td data-label="Military Status">{{candidate.militaryStatus}}</td>
+          <td data-label="Notice Period">
+            {{candidate.noticePeriodMonths}} months, {{candidate.noticePeriodDays}} days
+          </td>
+          <td>
+            <ion-buttons>
+              <ion-button color="danger" (click)="deleteCandidate(candidate.id!)">
+                <ion-icon name="trash"></ion-icon>
+                <span>Delete</span>
+              </ion-button>
+            </ion-buttons>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="filters-panel" [class.show]="showFilters">
+    <div class="filters-header">
+      <h3>Filters</h3>
+      <ion-button fill="clear" color="light" (click)="toggleFilters()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </div>
+    
+    <div class="filters-content">
+      <ion-item>
+        <ion-label position="stacked">Position</ion-label>
+        <ion-input [(ngModel)]="filters.position" 
+                   (ionChange)="applyFilters()" 
+                   placeholder="Enter position">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Military Status</ion-label>
+        <ion-select [(ngModel)]="filters.militaryStatus" 
+                    (ionChange)="applyFilters()"
+                    interface="popover">
+          <ion-select-option value="">All</ion-select-option>
+          <ion-select-option value="COMPLETED">Completed</ion-select-option>
+          <ion-select-option value="EXEMPT">Exempt</ion-select-option>
+          <ion-select-option value="POSTPONED">Postponed</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Notice Period</ion-label>
+        <div class="notice-period-container">
+          <ion-select [(ngModel)]="filters.noticePeriod.months" 
+                     (ionChange)="applyFilters()" 
+                     placeholder="Months"
+                     interface="popover"
+                     class="notice-select">
+            <ion-select-option value="-1">All</ion-select-option>
+            <ion-select-option *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10,11,12]" [value]="i">
+              {{i}} months
+            </ion-select-option>
+          </ion-select>
+
+          <ion-select [(ngModel)]="filters.noticePeriod.days" 
+                     (ionChange)="applyFilters()" 
+                     placeholder="Days"
+                     interface="popover"
+                     class="notice-select">
+            <ion-select-option value="-1">All</ion-select-option>
+            <ion-select-option *ngFor="let day of getDaysArray()" [value]="day">
+              {{day}} days
+            </ion-select-option>
+          </ion-select>
+        </div>
+      </ion-item>
+    </div>
+    
+    <div class="filter-actions">
+      <ion-button expand="block" color="orange" (click)="toggleFilters()">
+        Apply Filters
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="filters-overlay" [class.show]="showFilters" (click)="toggleFilters()"></div>
+</ion-content> 

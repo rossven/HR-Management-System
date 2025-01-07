@@ -1,0 +1,32 @@
+# Backend
+backend/HELP.md
+backend/.gradle
+backend/build/
+!backend/gradle/wrapper/gradle-wrapper.jar
+!backend/**/src/main/**/build/
+!backend/**/src/test/**/build/
+
+# Frontend
+frontend/node_modules
+frontend/.angular
+frontend/dist
+frontend/.env
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+### IDE ###
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+.project
+.classpath
+.settings/
+.springBeans
+.sts4-cache
+
+### OS ###
+.DS_Store
+Thumbs.db 

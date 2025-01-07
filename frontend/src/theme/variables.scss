@@ -1,0 +1,101 @@
+:root {
+  --ion-background-color: #2f2f2f;
+  --ion-background-color-rgb: 47,47,47;
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255,255,255;
+
+  // Turuncu tema renkleri
+  --ion-color-primary: #ff7b00;
+  --ion-color-primary-rgb: 255,123,0;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255,255,255;
+  --ion-color-primary-shade: #e06c00;
+  --ion-color-primary-tint: #ff8c1a;
+
+  --ion-color-secondary: #ff9933;
+  --ion-color-secondary-rgb: 255,153,51;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255,255,255;
+  --ion-color-secondary-shade: #e0872d;
+  --ion-color-secondary-tint: #ffa347;
+
+  --ion-item-background: #3d3d3d;
+  --ion-toolbar-background: #2f2f2f;
+  --ion-tab-bar-background: #2f2f2f;
+  --ion-card-background: #3d3d3d;
+
+  // Select ve option renkleri
+  --ion-select-interface-option-color: #ffffff;
+  --ion-select-interface-option-background: #3d3d3d;
+
+  /** warning **/
+  --ion-color-warning: #cc5200;
+  --ion-color-warning-rgb: 204,82,0;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255,255,255;
+  --ion-color-warning-shade: #b44800;
+  --ion-color-warning-tint: #d1631a;
+
+  /** custom orange **/
+  --ion-color-orange: #cc5200;
+  --ion-color-orange-rgb: 204,82,0;
+  --ion-color-orange-contrast: #ffffff;
+  --ion-color-orange-contrast-rgb: 255,255,255;
+  --ion-color-orange-shade: #b44800;
+  --ion-color-orange-tint: #d1631a;
+}
+
+// Select overlay için özel stiller
+.select-interface-option {
+  color: #ffffff !important;
+  --color: #ffffff !important;
+}
+
+ion-select::part(text) {
+  color: #ffffff;
+}
+
+ion-select::part(placeholder) {
+  color: #ffffff;
+  opacity: 0.7;
+}
+
+.action-sheet-button.sc-ion-action-sheet-md {
+  color: #ffffff;
+}
+
+.action-sheet-group.sc-ion-action-sheet-md {
+  background: #3d3d3d;
+}
+
+ion-title {
+  color: #ffffff;
+}
+
+ion-label {
+  color: #ffffff !important;
+}
+
+ion-item {
+  --color: #ffffff;
+}
+
+ion-select {
+  --placeholder-color: #ffffff;
+  --placeholder-opacity: 0.8;
+}
+
+ion-input {
+  --placeholder-color: #d7d7d7;
+  --placeholder-opacity: 0.8;
+  color: #ffffff;
+}
+
+.ion-color-orange {
+  --ion-color-base: var(--ion-color-orange);
+  --ion-color-base-rgb: var(--ion-color-orange-rgb);
+  --ion-color-contrast: var(--ion-color-orange-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-orange-contrast-rgb);
+  --ion-color-shade: var(--ion-color-orange-shade);
+  --ion-color-tint: var(--ion-color-orange-tint);
+} 
