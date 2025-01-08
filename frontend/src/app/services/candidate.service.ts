@@ -42,15 +42,13 @@ export class CandidateService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Bir hata oluştu';
+    let errorMessage = 'An error occurred';
     
     if (error.error instanceof ErrorEvent) {
-      // Client-side error
       errorMessage = error.error.message;
     } else {
-      // Server-side error
       if (error.status === 404) {
-        errorMessage = 'Kayıt bulunamadı';
+        errorMessage = 'Record not found';
       } else if (error.status === 400 && error.error) {
         errorMessage = Object.values(error.error).join('\n');
       }

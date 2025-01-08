@@ -60,7 +60,3 @@ sourceSets {
         }
     }
 }
-
-// Daemon yönetimi
-gradle.startParameter.maxWorkerCount = 1
-gradle.startParameter.continuous = false 

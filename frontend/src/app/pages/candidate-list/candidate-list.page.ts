@@ -47,7 +47,7 @@ export class CandidateListPage implements OnInit {
 
   async loadCandidates() {
     const loading = await this.loadingCtrl.create({
-      message: 'Yükleniyor...'
+      message: 'Loading...'
     });
     await loading.present();
     this.isLoading = true;
@@ -66,7 +66,7 @@ export class CandidateListPage implements OnInit {
         this.isLoading = false;
         
         const toast = await this.toastCtrl.create({
-          message: typeof error === 'string' ? error : 'Veriler yüklenirken bir hata oluştu',
+          message: typeof error === 'string' ? error : 'Error loading data',
           duration: 3000,
           color: 'danger'
         });
@@ -94,7 +94,7 @@ export class CandidateListPage implements OnInit {
   async deleteCandidate(id: number | undefined) {
     if (id === undefined) {
       const toast = await this.toastCtrl.create({
-        message: 'Geçersiz kayıt ID\'si',
+        message: 'Invalid record ID',
         duration: 3000,
         color: 'danger'
       });
@@ -103,7 +103,7 @@ export class CandidateListPage implements OnInit {
     }
 
     const loading = await this.loadingCtrl.create({
-      message: 'Siliniyor...'
+      message: 'Deleting...'
     });
     await loading.present();
 

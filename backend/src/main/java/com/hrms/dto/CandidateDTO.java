@@ -2,6 +2,8 @@ package com.hrms.dto;
 
 import com.hrms.entity.MilitaryStatus;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -9,29 +11,31 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CandidateDTO {
     private Long id;
     
-    @NotBlank(message = "Ad alanı zorunludur")
+    @NotBlank(message = "First name is required")
     private String firstName;
     
-    @NotBlank(message = "Soyad alanı zorunludur")
+    @NotBlank(message = "Last name is required")
     private String lastName;
     
-    @NotBlank(message = "Pozisyon alanı zorunludur")
+    @NotBlank(message = "Position is required")
     private String position;
     
-    @NotNull(message = "Askerlik durumu zorunludur")
+    @NotNull(message = "Military status is required")
     private MilitaryStatus militaryStatus;
     
     private Integer noticePeriodMonths;
     private Integer noticePeriodDays;
     
-    @NotBlank(message = "Telefon alanı zorunludur")
-    @Pattern(regexp = "^[0-9]{10}$", message = "Geçerli bir telefon numarası giriniz")
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Please enter a valid phone number")
     private String phone;
     
-    @NotBlank(message = "Email alanı zorunludur")
-    @Email(message = "Geçerli bir email adresi giriniz")
+    @NotBlank(message = "Email is required")
+    @Email(message = "Please enter a valid email address")
     private String email;
 } 
