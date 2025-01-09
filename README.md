@@ -113,3 +113,55 @@ Bu proje, bir İK Yönetim Sistemi'nin frontend (Ionic/Angular) ve backend (Spri
 - Dosya yükleme limiti 10MB ile sınırlandırılmıştır.
 
 
+
+### Docker ile çalıştırmak için:
+- Docker
+- Docker Compose
+
+## Docker ile Çalıştırma
+
+1. **Docker Compose ile Başlatma:**
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Servislerin Durumunu Kontrol Etme:**
+   ```bash
+   docker-compose ps
+   ```
+
+3. **Uygulama Adresleri:**
+   - Frontend: http://localhost:8100
+   - Backend API: http://localhost:8080
+
+4. **Logları İzleme:**
+   ```bash
+   # Tüm loglar
+   docker-compose logs -f
+
+   # Spesifik servis logları
+   docker-compose logs -f backend
+   docker-compose logs -f frontend
+   ```
+
+5. **Uygulamayı Durdurma:**
+   ```bash
+   docker-compose down
+   ```
+
+6. **Yeniden Build Etme:**
+   ```bash
+   docker-compose up -d --build
+   ```
+
+### Docker Sorun Giderme
+
+- Port çakışması durumunda:
+  - İlgili portları kullanan uygulamaları durdurun veya
+  - docker-compose.yml dosyasında port mapping'i değiştirin
+
+- Frontend backend'e bağlanamıyorsa:
+  - Backend servisinin çalıştığından emin olun
+  - Nginx proxy ayarlarını kontrol edin
+
+
