@@ -1,0 +1,42 @@
+<ion-content>
+  <div class="dashboard-container">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Total Candidates</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="stat-value">{{totalCandidates}}</div>
+              <div class="stat-label">Active candidates in system</div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Position Distribution</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <table class="position-table">
+                <thead>
+                  <tr>
+                    <th>Position</th>
+                    <th>Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let position of positionStats">
+                    <td>{{position.name}}</td>
+                    <td>{{position.count}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content> 

@@ -7,3 +7,66 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css"; 
+
+:root {
+  --ion-color-primary: #cc5200;
+  --ion-color-primary-rgb: 204, 82, 0;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #b44800;
+  --ion-color-primary-tint: #d1631a;
+
+  --ion-font-family: 'Inter', sans-serif;
+  --ion-default-font-size: 13px;
+}
+
+ion-card {
+  background: #2f2f2f;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 16px;
+  
+  ion-card-header {
+    padding: 16px;
+    
+    ion-card-title {
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+  
+  ion-card-content {
+    padding: 16px;
+  }
+}
+
+ion-button {
+  --border-radius: 8px;
+  font-weight: 500;
+  text-transform: none;
+  font-size: 13px;
+  
+  &.button-solid {
+    --box-shadow: none;
+  }
+}
+
+ion-item {
+  --border-radius: 8px;
+  --background: #2f2f2f;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin-bottom: 8px;
+  
+  &.item-has-focus {
+    --highlight-background: var(--ion-color-primary);
+  }
+  
+  ion-label {
+    font-size: 13px;
+  }
+  
+  ion-input, ion-select {
+    font-size: 13px;
+  }
+} 

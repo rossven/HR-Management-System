@@ -35,10 +35,11 @@ ion-content {
   align-items: center;
   margin-bottom: 20px;
 
-  h2 {
+  h1 {
     margin: 0;
     color: #ffffff;
-    font-size: 24px;
+    font-size: 20px;
+    font-weight: 500;
   }
 
   .table-actions {
@@ -65,11 +66,14 @@ ion-content {
     text-align: left;
     border-bottom: 1px solid #4a4a4a;
     color: #ffffff;
+    font-size: 13px;
   }
 
   th {
     font-weight: 500;
     background-color: #363636;
+    font-size: 12px;
+    color: #808080;
   }
 
   tbody tr {
@@ -81,6 +85,7 @@ ion-content {
 
     td {
       vertical-align: middle;
+      font-size: 13px;
     }
   }
 
@@ -88,6 +93,7 @@ ion-content {
     text-align: center;
     padding: 20px;
     color: #808080;
+    font-size: 13px;
   }
 }
 
@@ -124,7 +130,7 @@ ion-content {
     h3 {
       margin: 0;
       color: #ffffff;
-      font-size: 18px;
+      font-size: 15px;
     }
 
     ion-button {
@@ -157,18 +163,20 @@ ion-content {
       ion-label {
         color: #ffffff;
         margin-bottom: 8px;
+        font-size: 13px;
       }
 
       ion-input, ion-select {
         --color: #ffffff;
         --placeholder-color: #808080;
+        font-size: 13px;
       }
     }
 
     .notice-period-section {
       ion-label {
         margin-left: 0;
-        font-size: 16px;
+        font-size: 13px;
       }
 
       .notice-period-selects {

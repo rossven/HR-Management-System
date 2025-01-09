@@ -14,6 +14,9 @@ export interface Candidate {
   noticePeriodDays?: number;
   phone: string;
   email: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
+  cvFileName?: string;
+  cvFilePath?: string;
+  cvContentType?: string;
 } 

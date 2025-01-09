@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, map } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Candidate } from '../models/candidate.interface';
 import { environment } from '../../environments/environment';
@@ -85,6 +85,26 @@ export class CandidateService {
     formData.append('cv', cvFile);
     
     return this.http.put<Candidate>(`${this.apiUrl}/${id}/with-cv`, formData);
+  }
+
+  getDashboardStats() {
+    return this.getAllCandidates().pipe(
+      map(candidates => {
+        const positionCounts = candidates.reduce((acc, candidate) => {
+          acc[candidate.position] = (acc[candidate.position] || 0) + 1;
+          return acc;
+        }, {} as { [key: string]: number });
+        
+        const positionStats = Object.entries(positionCounts)
+          .map(([name, count]) => ({ name, count }))
+          .sort((a, b) => b.count - a.count);
+
+        return {
+          totalCandidates: candidates.length,
+          positionStats
+        };
+      })
+    );
   }
 
   private handleError(error: HttpErrorResponse) {
