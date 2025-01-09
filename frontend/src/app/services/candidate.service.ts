@@ -3,12 +3,29 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Candidate } from '../models/candidate.interface';
+import { environment } from '../../environments/environment';
+import { APP_CONSTANTS } from '../core/constants/app.constants';
+
+interface CandidateCreateRequest {
+  firstName: string;
+  lastName: string;
+  position: string;
+  militaryStatus: string;
+  noticePeriodMonths?: number;
+  noticePeriodDays?: number;
+  phone: string;
+  email: string;
+}
+
+interface CandidateUpdateRequest extends CandidateCreateRequest {
+  cvFile?: File;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CandidateService {
-  private apiUrl = 'http://localhost:8080/api/candidates';
+  private apiUrl = `${environment.apiUrl}/candidates`;
 
   constructor(private http: HttpClient) {}
 
@@ -26,16 +43,23 @@ export class CandidateService {
       .pipe(catchError(this.handleError));
   }
 
-  createCandidate(candidateData: any, cvFile: File): Observable<Candidate> {
+  createCandidate(candidateData: CandidateCreateRequest, cvFile: File): Observable<Candidate> {
     const formData = new FormData();
     
-    const { cvFile: _, ...candidateDataWithoutFile } = candidateData;
+    const candidateBlob = new Blob([JSON.stringify(candidateData)], {
+        type: 'application/json'
+    });
     
-    formData.append('data', new Blob([JSON.stringify(candidateDataWithoutFile)], { type: 'application/json' }));
+    formData.append('data', candidateBlob);
     formData.append('cv', cvFile);
     
     return this.http.post<Candidate>(this.apiUrl, formData)
-      .pipe(catchError(this.handleError));
+        .pipe(
+            catchError(error => {
+                console.error('Error creating candidate:', error);
+                return throwError(error);
+            })
+        );
   }
 
   updateCandidate(id: number, candidate: Candidate): Observable<Candidate> {
@@ -53,7 +77,7 @@ export class CandidateService {
     }).pipe(catchError(this.handleError));
   }
 
-  updateCandidateWithCV(id: number, candidateData: any, cvFile: File): Observable<Candidate> {
+  updateCandidateWithCV(id: number, candidateData: CandidateUpdateRequest, cvFile: File): Observable<Candidate> {
     const formData = new FormData();
     const { cvFile: _, ...candidateDataWithoutFile } = candidateData;
     

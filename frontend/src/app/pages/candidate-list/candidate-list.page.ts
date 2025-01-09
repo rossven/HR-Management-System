@@ -4,6 +4,18 @@ import { Candidate, MilitaryStatus } from '../../models/candidate.interface';
 import { LoadingController, ToastController, ModalController } from '@ionic/angular';
 import { CandidateModalComponent } from '../../components/candidate-modal/candidate-modal.component';
 import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
+import { environment } from '../../../environments/environment';
+import { APP_CONSTANTS } from '../../core/constants/app.constants';
+
+interface CandidateFilters {
+  name: string;
+  position: string;
+  militaryStatus: string;
+  noticePeriod: {
+    months: number;
+    days: number;
+  };
+}
 
 @Component({
   selector: 'app-candidate-list',
@@ -17,14 +29,14 @@ export class CandidateListPage implements OnInit {
   showFilters = false;
   militaryStatus = MilitaryStatus;
 
-  filters = {
+  filters: CandidateFilters = {
     name: '',
     position: '',
     militaryStatus: '',
     noticePeriod: {
       months: -1,
       days: -1
-    },
+    }
   };
 
   constructor(
@@ -49,7 +61,7 @@ export class CandidateListPage implements OnInit {
 
   async loadCandidates() {
     const loading = await this.loadingCtrl.create({
-      message: 'Loading...'
+      message: APP_CONSTANTS.MESSAGES.LOADING
     });
     await loading.present();
     this.isLoading = true;
@@ -110,7 +122,7 @@ export class CandidateListPage implements OnInit {
       cssClass: 'small-modal',
       backdropDismiss: true,
       componentProps: {
-        message: 'Are you sure you want to delete this candidate?',
+        message: APP_CONSTANTS.MESSAGES.CONFIRM_DELETE,
       },
     });
 

@@ -30,3 +30,7 @@ frontend/yarn-error.log*
 ### OS ###
 .DS_Store
 Thumbs.db 
+
+# CV uploads
+backend/uploads/
+backend/uploads/** 
