@@ -116,39 +116,49 @@ export class CandidateModalComponent implements OnInit {
   }
 
   save() {
-    if (this.candidateForm.valid) {
-      const formValue = this.candidateForm.value;
-      const candidateData = {
-        firstName: formValue.firstName,
-        lastName: formValue.lastName,
-        position: formValue.position,
-        militaryStatus: formValue.militaryStatus,
-        noticePeriodMonths: formValue.hasNoticePeriod ? formValue.noticePeriod.months : 0,
-        noticePeriodDays: formValue.hasNoticePeriod ? formValue.noticePeriod.days : 0,
-        phone: formValue.phone,
-        email: formValue.email
-      };
+    if (!this.candidateForm.valid) {
+      return this.modalCtrl.dismiss(null, 'invalid');
+    }
 
-      if (this.candidate) {
-        if (this.selectedFile) {
-          return this.modalCtrl.dismiss({
-            ...candidateData,
-            cvFile: this.selectedFile
-          }, 'save-with-cv');
-        } else {
-          return this.modalCtrl.dismiss(candidateData, 'save');
-        }
-      } else {
-        if (!this.selectedFile) {
-          return this.modalCtrl.dismiss(null, 'invalid');
-        }
+    if (!this.candidate && !this.selectedFile) {
+      this.toastCtrl.create({
+        message: 'Please select a CV file',
+        duration: 3000,
+        color: 'danger'
+      }).then(toast => toast.present());
+      return;
+    }
+
+    const formValue = this.candidateForm.value;
+    const candidateData = {
+      firstName: formValue.firstName,
+      lastName: formValue.lastName,
+      position: formValue.position,
+      militaryStatus: formValue.militaryStatus,
+      noticePeriodMonths: formValue.hasNoticePeriod ? formValue.noticePeriod.months : 0,
+      noticePeriodDays: formValue.hasNoticePeriod ? formValue.noticePeriod.days : 0,
+      phone: formValue.phone,
+      email: formValue.email
+    };
+
+    if (this.candidate) {
+      if (this.selectedFile) {
         return this.modalCtrl.dismiss({
           ...candidateData,
           cvFile: this.selectedFile
-        }, 'save');
+        }, 'save-with-cv');
+      } else {
+        return this.modalCtrl.dismiss(candidateData, 'save');
       }
+    } else {
+      if (!this.selectedFile) {
+        return this.modalCtrl.dismiss(null, 'invalid');
+      }
+      return this.modalCtrl.dismiss({
+        ...candidateData,
+        cvFile: this.selectedFile
+      }, 'save');
     }
-    return this.modalCtrl.dismiss(null, 'invalid');
   }
 
   getDaysArray(): number[] {

@@ -14,24 +14,24 @@
     <div class="form-section">
       <div class="form-row">
         <div class="form-field">
-          <ion-label>First Name</ion-label>
+          <ion-label>First Name <ion-text color="danger">*</ion-text></ion-label>
           <ion-input formControlName="firstName" type="text" placeholder="Enter first name"></ion-input>
         </div>
 
         <div class="form-field">
-          <ion-label>Last Name</ion-label>
+          <ion-label>Last Name <ion-text color="danger">*</ion-text></ion-label>
           <ion-input formControlName="lastName" type="text" placeholder="Enter last name"></ion-input>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-field">
-          <ion-label>Position</ion-label>
+          <ion-label>Position <ion-text color="danger">*</ion-text></ion-label>
           <ion-input formControlName="position" type="text" placeholder="Enter position"></ion-input>
         </div>
 
         <div class="form-field">
-          <ion-label>Military Status</ion-label>
+          <ion-label>Military Status <ion-text color="danger">*</ion-text></ion-label>
           <ion-select formControlName="militaryStatus" interface="action-sheet" placeholder="Select status">
             <ion-select-option value="COMPLETED">Completed</ion-select-option>
             <ion-select-option value="EXEMPT">Exempt</ion-select-option>
@@ -70,20 +70,20 @@
 
       <div class="form-row">
         <div class="form-field">
-          <ion-label>Phone</ion-label>
+          <ion-label>Phone <ion-text color="danger">*</ion-text></ion-label>
           <ion-input formControlName="phone" type="tel" placeholder="Enter phone number"></ion-input>
         </div>
 
         <div class="form-field">
-          <ion-label>Email</ion-label>
+          <ion-label>Email <ion-text color="danger">*</ion-text></ion-label>
           <ion-input formControlName="email" type="email" placeholder="Enter email address"></ion-input>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-field">
-          <ion-label>CV (PDF)</ion-label>
-          <div class="cv-container">
+          <ion-label>CV (PDF) <ion-text color="danger">*</ion-text></ion-label>
+          <div class="cv-container" [class.invalid]="!selectedFile && !candidate?.cvFileName">
             <div class="current-cv" *ngIf="candidate?.cvFileName">
               <div class="cv-info">
                 <ion-icon name="document-text"></ion-icon>
@@ -121,6 +121,9 @@
               </div>
             </div>
           </div>
+          <ion-text color="danger" *ngIf="!selectedFile && !candidate?.cvFileName">
+            CV file is required
+          </ion-text>
         </div>
       </div>
     </div>

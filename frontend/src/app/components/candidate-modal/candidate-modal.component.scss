@@ -279,4 +279,8 @@ ion-footer ion-toolbar {
       }
     }
   }
+
+  &.invalid {
+    border-color: var(--ion-color-danger);
+  }
 } 
