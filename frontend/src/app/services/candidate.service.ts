@@ -26,8 +26,15 @@ export class CandidateService {
       .pipe(catchError(this.handleError));
   }
 
-  createCandidate(candidate: Candidate): Observable<Candidate> {
-    return this.http.post<Candidate>(this.apiUrl, candidate)
+  createCandidate(candidateData: any, cvFile: File): Observable<Candidate> {
+    const formData = new FormData();
+    
+    const { cvFile: _, ...candidateDataWithoutFile } = candidateData;
+    
+    formData.append('data', new Blob([JSON.stringify(candidateDataWithoutFile)], { type: 'application/json' }));
+    formData.append('cv', cvFile);
+    
+    return this.http.post<Candidate>(this.apiUrl, formData)
       .pipe(catchError(this.handleError));
   }
 
@@ -37,8 +44,23 @@ export class CandidateService {
   }
 
   deleteCandidate(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`)
-      .pipe(catchError(this.handleError));
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  downloadCV(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${id}/cv`, {
+      responseType: 'blob'
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateCandidateWithCV(id: number, candidateData: any, cvFile: File): Observable<Candidate> {
+    const formData = new FormData();
+    const { cvFile: _, ...candidateDataWithoutFile } = candidateData;
+    
+    formData.append('data', new Blob([JSON.stringify(candidateDataWithoutFile)], { type: 'application/json' }));
+    formData.append('cv', cvFile);
+    
+    return this.http.put<Candidate>(`${this.apiUrl}/${id}/with-cv`, formData);
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -52,17 +52,21 @@ export class CandidateFormPage implements OnInit {
     if (this.candidateForm.valid) {
       const candidateData = this.candidateForm.value;
       
+      // Boş bir PDF dosyası oluştur (geçici çözüm)
+      const emptyPdfBlob = new Blob([''], { type: 'application/pdf' });
+      const emptyPdfFile = new File([emptyPdfBlob], 'empty.pdf', { type: 'application/pdf' });
+      
       if (this.isEdit) {
         this.candidateService.updateCandidate(this.candidateId, candidateData)
           .subscribe(() => this.router.navigate(['/candidate-list']));
       } else {
-        this.candidateService.createCandidate(candidateData)
+        this.candidateService.createCandidate(candidateData, emptyPdfFile)
           .subscribe(
             (response) => {
               this.router.navigate(['/candidate-list']);
             },
             (error) => {
-              // hata işleme
+              // error handling
             }
           );
       }

@@ -1,71 +1,115 @@
-Küçük bir İnsan Kaynakları Yönetim Sistemi (Java Backend + Angular Frontend) gerekli olan;
+# HR Management System - Kurulum Kılavuzu
 
-Proje Gereksinimleri:
+Bu proje, bir İK Yönetim Sistemi'nin frontend (Ionic/Angular) ve backend (Spring Boot) uygulamalarını içermektedir.
 
-1. Genel Açıklama:
+## Gereksinimler
 
-Bir işe alım yönetim sistemi tasarlayın. Sistemde:
+### Frontend için:
+- Node.js (v14 veya üzeri)
+- npm (Node Package Manager)
+- Ionic CLI (`npm install -g @ionic/cli`)
 
-Kayıtlı adayların bir listesini görüntüleyebileceğiniz bir sayfa olsun.
-Yeni aday ekleyebileceğiniz, mevcut adayları düzenleyip silebileceğiniz bir sistem oluşturun.
-Backend tarafında Java kullanılarak bir REST API geliştirilecek, veriler bir veritabanında saklanacaktır.
-2. Teknik Gereksinimler:
+### Backend için:
+- Java JDK 17
+- Gradle 7.6 veya üzeri
 
-Backend:
+## Backend Kurulumu
 
-Java 8 veya üstü kullanılarak geliştirilmelidir.
-Framework: Spring Boot.
-Veritabanı: H2 (geliştirme sırasında) veya PostgreSQL (opsiyonel).
-CRUD işlemleri için REST API oluşturulmalıdır.
-Adayları listeleme, ekleme, düzenleme ve silme işlemleri yapılabilir olmalıdır.
-Frontend:
+1. **Proje Dizinine Git:**
+   ```bash
+   cd backend
+   ```
 
-Ionic Framework kullanılarak geliştirilmelidir.
-Backend'deki REST API'ye bağlanarak gerekli işlemleri yapmalıdır.
-Minimum 10 kayıt ile başlamalı ve kullanıcılar yeni adaylar ekleyebilmelidir.
-3. Detaylar:
+2. **Gradle Wrapper ile Projeyi Derle:**
+   ```bash
+   # Windows için:
+   gradlew.bat build
 
-Backend (Java + Spring Boot):
+   # Linux/MacOS için:
+   ./gradlew build
+   ```
 
-Aday Tablosu (Candidate):
-id: Benzersiz kimlik.
-firstName: Ad.
-lastName: Soyad.
-position: Başvurduğu pozisyon.
-militaryStatus: Askerlik durumu (tamamlandı/muaf/tecilli).
-noticePeriod: İhbar süresi (örneğin: 2 hafta/1 ay).
-phone: Telefon numarası.
-email: Eposta adresi.
-cv: CV dosya adı ya da yolu.
-CRUD API:
-Aday ekleme: POST /api/candidates.
-Aday listeleme: GET /api/candidates.
-Aday güncelleme: PUT /api/candidates/{id}.
-Aday silme: DELETE /api/candidates/{id}.
-Filtreleme: Pozisyon, askerlik durumu ve ihbar süresine göre sorgular yapılabilir.
-Veritabanı:
-H2: Geliştirme sırasında kullanılabilir.
-PostgreSQL: Opsiyonel olarak tercih edilebilir, PostgreSQL script dosyası paylaşılabilir.
-Frontend (Angular + Ionic):
+3. **Uygulamayı Başlat:**
+   ```bash
+   # Windows için:
+   gradlew.bat bootRun
 
-Aday Listesi:
-Kayıtlı adayların bir listesi görüntülenir.
-Kullanıcı, pozisyon, askerlik durumu ve ihbar süresine göre listeyi filtreleyebilir.
-Yeni Aday Ekle/Düzenle Formu:
-Kullanıcı ad, soyad, başvurduğu pozisyon, askerlik durumu, ihbar süresi, telefon ve e-posta bilgilerini girebilir.
-CV yüklenebilir.
-Form kaydedildiğinde, veri backend'e gönderilir ve liste güncellenir.
-Silme İşlemi:
-Her adayın yanında bir "Sil" butonu bulunmalıdır.
-4. Teslimat Koşulları:
+   # Linux/MacOS için:
+   ./gradlew bootRun
+   ```
 
-Proje, bir GitHub deposu üzerinden paylaşılmalıdır.
-Backend ve frontend kodları ayrı klasörler içinde düzenlenmelidir.
-README dosyasında şu bilgiler yer almalıdır:
-Projenin nasıl çalıştırılacağı.
-Veritabanı ayarları (PostgreSQL kullanılacaksa gerekli bilgiler).
-API uç noktaları (endpoint) listesi.
-5. Bonus (Opsiyonel):
+   Backend uygulaması `http://localhost:8080` adresinde çalışacaktır.
 
-Validation: Formlardaki veri girişleri için Angular reactive forms ve backend tarafında Spring Validation kullanabilirsiniz.
-Frontend Tasarımı: Mobil uyumlu bir arayüz oluşturulabilir.
+### Önemli Backend Notları:
+- Uygulama H2 veritabanı kullanmaktadır ve `./hrdb` konumunda otomatik olarak oluşturulacaktır
+- CV dosyaları `./uploads/cvs` dizininde saklanacaktır
+- H2 Console'a `http://localhost:8080/h2-console` adresinden erişilebilir
+- API endpoint'leri `http://localhost:8080/api/candidates` altında bulunmaktadır
+
+## Frontend Kurulumu
+
+1. **Proje Dizinine Git:**
+   ```bash
+   cd frontend
+   ```
+
+2. **Bağımlılıkları Yükle:**
+   ```bash
+   npm install
+   ```
+
+3. **Uygulamayı Başlat:**
+   ```bash
+   ionic serve
+   ```
+
+   Frontend uygulaması `http://localhost:8100` adresinde çalışacaktır.
+
+### Önemli Frontend Notları:
+- Uygulama Ionic/Angular framework'ü kullanmaktadır
+- Backend bağlantısı `http://localhost:8080` adresine yapılandırılmıştır
+- Arayüz responsive tasarıma sahiptir ve mobil cihazlarda da çalışır
+
+## Uygulama Özellikleri
+
+- Aday listesi görüntüleme
+- Yeni aday ekleme
+- Aday silme
+- CV yükleme ve indirme
+- Adayları filtreleme:
+  - İsim
+  - Pozisyon
+  - Askerlik durumu
+  - İhbar süresi
+
+## Sorun Giderme
+
+### Backend için:
+- Port 8080 kullanımda ise: `application.properties` dosyasından `server.port` değerini değiştirin
+- Gradle derlemesi başarısız olursa: Gradle cache'ini temizleyin:
+  ```bash
+  # Windows için:
+  gradlew.bat clean
+
+  # Linux/MacOS için:
+  ./gradlew clean
+  ```
+
+### Frontend için:
+- Port 8100 kullanımda ise: Farklı bir port ile başlatın:
+  ```bash
+  ionic serve --port 8101
+  ```
+- `npm install` hata verirse:
+  ```bash
+  npm cache clean --force
+  rm -rf node_modules
+  npm install
+  ```
+
+## Güvenlik Notları
+
+- Backend CORS yapılandırması sadece `localhost:8100` ve `localhost:8101` için izin vermektedir
+- Dosya yükleme limiti 10MB ile sınırlandırılmıştır.
+
+

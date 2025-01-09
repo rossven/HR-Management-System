@@ -73,6 +73,8 @@ ion-content {
   }
 
   tbody tr {
+    cursor: pointer;
+    
     &:hover {
       background-color: #363636;
     }
@@ -139,6 +141,13 @@ ion-content {
 
   .filters-content {
     padding: 16px;
+
+    ion-select {
+      --padding-top: 10px;
+      --padding-bottom: 10px; 
+      --margin-top: 0; 
+      --margin-bottom: 0; 
+    }
 
     ion-item, .notice-period-section {
       --background: transparent;

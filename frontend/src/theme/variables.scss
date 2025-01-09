@@ -4,7 +4,6 @@
   --ion-text-color: #ffffff;
   --ion-text-color-rgb: 255,255,255;
 
-  // Turuncu tema renkleri
   --ion-color-primary: #ff7b00;
   --ion-color-primary-rgb: 255,123,0;
   --ion-color-primary-contrast: #ffffff;
@@ -24,11 +23,10 @@
   --ion-tab-bar-background: #2f2f2f;
   --ion-card-background: #3d3d3d;
 
-  // Select ve option renkleri
   --ion-select-interface-option-color: #ffffff;
   --ion-select-interface-option-background: #3d3d3d;
 
-  /** warning **/
+
   --ion-color-warning: #cc5200;
   --ion-color-warning-rgb: 204,82,0;
   --ion-color-warning-contrast: #ffffff;
@@ -36,7 +34,6 @@
   --ion-color-warning-shade: #b44800;
   --ion-color-warning-tint: #d1631a;
 
-  /** custom orange **/
   --ion-color-orange: #cc5200;
   --ion-color-orange-rgb: 204,82,0;
   --ion-color-orange-contrast: #ffffff;
@@ -45,7 +42,7 @@
   --ion-color-orange-tint: #d1631a;
 }
 
-// Select overlay için özel stiller
+
 .select-interface-option {
   color: #ffffff !important;
   --color: #ffffff !important;

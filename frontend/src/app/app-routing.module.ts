@@ -4,20 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'candidate-list',
+    redirectTo: 'candidates',
     pathMatch: 'full'
   },
   {
-    path: 'candidate-list',
+    path: 'candidates',
     loadChildren: () => import('./pages/candidate-list/candidate-list.module').then(m => m.CandidateListPageModule)
-  },
-  {
-    path: 'candidate-form',
-    loadChildren: () => import('./pages/candidate-form/candidate-form.module').then(m => m.CandidateFormPageModule)
-  },
-  {
-    path: 'candidate-form/:id',
-    loadChildren: () => import('./pages/candidate-form/candidate-form.module').then(m => m.CandidateFormPageModule)
   }
 ];
 

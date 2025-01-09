@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>New Candidate</ion-title>
+    <ion-title>{{ candidate ? 'Edit Candidate' : 'New Candidate' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancel()">
         <ion-icon name="close"></ion-icon>
@@ -77,6 +77,50 @@
         <div class="form-field">
           <ion-label>Email</ion-label>
           <ion-input formControlName="email" type="email" placeholder="Enter email address"></ion-input>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <ion-label>CV (PDF)</ion-label>
+          <div class="cv-container">
+            <div class="current-cv" *ngIf="candidate?.cvFileName">
+              <div class="cv-info">
+                <ion-icon name="document-text"></ion-icon>
+                <span class="cv-name">{{candidate.cvFileName}}</span>
+              </div>
+              <div class="cv-actions">
+                <ion-button color="primary" size="small" (click)="downloadCV()">
+                  <ion-icon name="download-outline"></ion-icon>
+                  Download
+                </ion-button>
+              </div>
+            </div>
+
+            <div class="cv-upload" [class.has-file]="selectedFile">
+              <input type="file" 
+                     accept="application/pdf" 
+                     (change)="onFileSelected($event)"
+                     #fileInput
+                     [style.display]="'none'">
+              
+              <div class="upload-area" (click)="fileInput.click()" *ngIf="!selectedFile">
+                <ion-icon name="cloud-upload"></ion-icon>
+                <p>Click to upload new CV (PDF)</p>
+                <small>or drag and drop</small>
+              </div>
+
+              <div class="selected-file" *ngIf="selectedFile">
+                <div class="file-info">
+                  <ion-icon name="document"></ion-icon>
+                  <span>{{selectedFile.name}}</span>
+                </div>
+                <ion-button fill="clear" color="danger" (click)="clearSelectedFile()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

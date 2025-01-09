@@ -13,18 +13,14 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        
-        // İzin verilen origin'ler
+
         config.addAllowedOrigin("http://localhost:8100");
-        config.addAllowedOrigin("http://localhost:4200");
-        
-        // İzin verilen HTTP metodları
+        config.addAllowedOrigin("http://localhost:8101");
+
         config.addAllowedMethod("*");
-        
-        // İzin verilen header'lar
+
         config.addAllowedHeader("*");
-        
-        // Credentials izni (örn: cookies)
+
         config.setAllowCredentials(true);
         
         source.registerCorsConfiguration("/**", config);

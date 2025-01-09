@@ -35,7 +35,7 @@
         <tr *ngIf="filteredCandidates.length === 0">
           <td colspan="6" class="no-data">No candidates found</td>
         </tr>
-        <tr *ngFor="let candidate of filteredCandidates">
+        <tr *ngFor="let candidate of filteredCandidates" (click)="openCandidateModal(candidate)">
           <td data-label="Name">{{candidate.firstName}} {{candidate.lastName}}</td>
           <td data-label="Position">{{candidate.position}}</td>
           <td data-label="Email">{{candidate.email}}</td>
@@ -44,8 +44,12 @@
             {{candidate.noticePeriodMonths}} months, {{candidate.noticePeriodDays}} days
           </td>
           <td>
-            <ion-buttons>
-              <ion-button color="danger" (click)="deleteCandidate(candidate.id!)">
+            <ion-buttons (click)="$event.stopPropagation()">
+              <ion-button color="primary" (click)="downloadCV(candidate.id!)">
+                <ion-icon name="download"></ion-icon>
+                <span>CV</span>
+              </ion-button>
+              <ion-button id="delete-button" color="danger" expand="block" (click)="candidate.id ? presentConfirmationModal(candidate.id) : null">
                 <ion-icon name="trash"></ion-icon>
                 <span>Delete</span>
               </ion-button>
@@ -65,6 +69,14 @@
     </div>
     
     <div class="filters-content">
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input [(ngModel)]="filters.name" 
+                   (ionChange)="applyFilters()" 
+                   placeholder="Enter name">
+        </ion-input>
+      </ion-item>
+
       <ion-item>
         <ion-label position="stacked">Position</ion-label>
         <ion-input [(ngModel)]="filters.position" 

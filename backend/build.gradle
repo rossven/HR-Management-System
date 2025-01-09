@@ -33,6 +33,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.apache.pdfbox:pdfbox:2.0.29'
 }
 
 bootRun {

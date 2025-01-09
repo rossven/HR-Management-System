@@ -1,56 +1,39 @@
 package com.hrms.controller;
 
 import com.hrms.dto.CandidateDTO;
+import com.hrms.entity.Candidate;
 import com.hrms.service.CandidateService;
+import com.hrms.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import lombok.extern.slf4j.Slf4j;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.beans.BeanUtils;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import com.hrms.entity.MilitaryStatus;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/candidates")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@Slf4j
 public class CandidateController {
 
     private final CandidateService candidateService;
+    private final FileStorageService fileStorageService;
 
     @GetMapping
     public ResponseEntity<List<CandidateDTO>> getAllCandidates() {
         return ResponseEntity.ok(candidateService.getAllCandidates());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<CandidateDTO> getCandidate(@PathVariable Long id) {
-        return ResponseEntity.ok(candidateService.getCandidate(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<CandidateDTO> createCandidate(@Valid @RequestBody Map<String, Object> request) {
-        CandidateDTO candidateDTO = new CandidateDTO();
-        candidateDTO.setFirstName((String) request.get("firstName"));
-        candidateDTO.setLastName((String) request.get("lastName"));
-        candidateDTO.setEmail((String) request.get("email"));
-        candidateDTO.setPhone((String) request.get("phone"));
-        candidateDTO.setPosition((String) request.get("position"));
-        candidateDTO.setMilitaryStatus(MilitaryStatus.valueOf((String) request.get("militaryStatus")));
-        
-        boolean hasNoticePeriod = Boolean.TRUE.equals(request.get("hasNoticePeriod"));
-        if (hasNoticePeriod && request.get("noticePeriod") != null) {
-            @SuppressWarnings("unchecked")
-            Map<String, Integer> noticePeriod = (Map<String, Integer>) request.get("noticePeriod");
-            candidateDTO.setNoticePeriodMonths(noticePeriod.get("months"));
-            candidateDTO.setNoticePeriodDays(noticePeriod.get("days"));
-        } else {
-            candidateDTO.setNoticePeriodMonths(0);
-            candidateDTO.setNoticePeriodDays(0);
-        }
-        
-        return ResponseEntity.ok(candidateService.createCandidate(candidateDTO));
     }
 
     @PutMapping("/{id}")
@@ -63,6 +46,94 @@ public class CandidateController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCandidate(@PathVariable Long id) {
         candidateService.deleteCandidate(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/cv")
+    public ResponseEntity<Resource> downloadCV(@PathVariable Long id) {
+        try {
+            log.info("Downloading CV for candidate ID: {}", id);
+            Candidate candidate = candidateService.getCandidateEntity(id);
+            Resource resource = fileStorageService.loadFileAsResource(candidate.getCvFileName());
+
+            long contentLength = resource.contentLength();
+            log.info("CV file size: {} bytes", contentLength);
+            
+            if (contentLength == 0) {
+                log.error("CV file is empty for candidate ID: {}", id);
+                return ResponseEntity.badRequest().build();
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(contentLength)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, 
+                           "attachment; filename=\"" + candidate.getCvFileName() + "\"")
+                    .body(resource);
+        } catch (Exception e) {
+            log.error("Error downloading CV for candidate ID: {}", id, e);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}/with-cv")
+    public ResponseEntity<CandidateDTO> updateCandidateWithCV(
+            @PathVariable Long id,
+            @RequestPart("data") Map<String, Object> request,
+            @RequestPart("cv") MultipartFile cvFile) {
+        
+        try {
+            log.info("Updating candidate with CV. ID: {}", id);
+            
+            CandidateDTO candidateDTO = createCandidateDTOFromRequest(id, request);
+            addCVInfo(candidateDTO, cvFile);
+            
+            return ResponseEntity.ok(candidateService.updateCandidate(id, candidateDTO));
+        } catch (Exception e) {
+            log.error("Error updating candidate with CV", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    private CandidateDTO createCandidateDTOFromRequest(Long id, Map<String, Object> request) {
+        Candidate existingCandidate = candidateService.getCandidateEntity(id);
+        JsonNode jsonNode = new ObjectMapper().valueToTree(request);
+
+        return CandidateDTO.builder()
+                .id(existingCandidate.getId())
+                .firstName(getNodeTextOrDefault(jsonNode, "firstName", existingCandidate.getFirstName()))
+                .lastName(getNodeTextOrDefault(jsonNode, "lastName", existingCandidate.getLastName()))
+                .position(getNodeTextOrDefault(jsonNode, "position", existingCandidate.getPosition()))
+                .militaryStatus(getMilitaryStatusOrDefault(jsonNode, existingCandidate.getMilitaryStatus()))
+                .noticePeriodMonths(getNodeIntOrDefault(jsonNode, "noticePeriodMonths", existingCandidate.getNoticePeriodMonths()))
+                .noticePeriodDays(getNodeIntOrDefault(jsonNode, "noticePeriodDays", existingCandidate.getNoticePeriodDays()))
+                .phone(getNodeTextOrDefault(jsonNode, "phone", existingCandidate.getPhone()))
+                .email(getNodeTextOrDefault(jsonNode, "email", existingCandidate.getEmail()))
+                .cvFileName(existingCandidate.getCvFileName())
+                .cvFilePath(existingCandidate.getCvFilePath())
+                .cvContentType(existingCandidate.getCvContentType())
+                .build();
+    }
+
+    private void addCVInfo(CandidateDTO dto, MultipartFile cvFile) throws IOException {
+        String fileName = fileStorageService.storeFile(cvFile);
+        dto.setCvFileName(fileName);
+        dto.setCvContentType(cvFile.getContentType());
+        dto.setCvFilePath(fileStorageService.getFileStorageLocation().resolve(fileName).toString());
+        log.info("Successfully processed CV file: {}", fileName);
+    }
+
+    private String getNodeTextOrDefault(JsonNode node, String field, String defaultValue) {
+        return node.has(field) ? node.get(field).asText() : defaultValue;
+    }
+
+    private Integer getNodeIntOrDefault(JsonNode node, String field, Integer defaultValue) {
+        return node.has(field) ? node.get(field).asInt() : defaultValue;
+    }
+
+    private MilitaryStatus getMilitaryStatusOrDefault(JsonNode node, MilitaryStatus defaultValue) {
+        return node.has("militaryStatus") ? 
+               MilitaryStatus.valueOf(node.get("militaryStatus").asText()) : 
+               defaultValue;
     }
 } 
